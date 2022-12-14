@@ -12,9 +12,9 @@ namespace Ecommerce.Controllers
             _context = context;
         }
 
-        public async task<IActionResult> Index()
-        {
-            var response = await _context.Categories.ToListAsync();
+		public async Task<IActionResult> Index()
+		{
+			var response = await _context.Categories.ToListAsync();
             return View(response);
         }
     }
