@@ -55,8 +55,7 @@ namespace Ecommerce.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Category category)
         {
-            var categoryId = await _services.GetByIdAsync(category.Id);
-            if (!ModelState.IsValid && categoryId == null)
+            if (!ModelState.IsValid)
             {
                 return View("NotFound");
             }
