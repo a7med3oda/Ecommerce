@@ -12,20 +12,18 @@ namespace Ecommerce.Controllers
         {
             _services = services;
         }
-
-		public async Task<IActionResult> Index()
-		{
-			var response = await _services.GetAllAsync();
-            return View(response);
+        public async Task<IActionResult> Index()
+        {
+            var Response = await _services.GetAllAsync();
+            return View(Response);
         }
-
-        [HttpGet] // default not require to add
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Name,Description")]Category category)    // Bind ==> for identify whay I want from DB only
+        public async Task<IActionResult> Create([Bind("Name,Description")] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -34,6 +32,7 @@ namespace Ecommerce.Controllers
             }
             return View(category);
         }
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var category = await _services.GetByIdAsync(id);
@@ -58,6 +57,7 @@ namespace Ecommerce.Controllers
             if (!ModelState.IsValid)
             {
                 return View("NotFound");
+
             }
             await _services.UpdateAsync(category);
             return RedirectToAction(nameof(Index));
@@ -67,5 +67,6 @@ namespace Ecommerce.Controllers
             await _services.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

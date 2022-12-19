@@ -1,6 +1,8 @@
 ﻿using Ecommerce.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq.Expressions;
+
 
 namespace Ecommerce.Data.Base
 {
@@ -13,7 +15,6 @@ namespace Ecommerce.Data.Base
             _context = context;
             _entities = _context.Set<T>();
         }
-
         public async Task CreateAsync(T entity)
         {
             await _entities.AddAsync(entity);
@@ -30,9 +31,25 @@ namespace Ecommerce.Data.Base
             }
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync() => await _entities.ToListAsync();
+        public async Task<IEnumerable<T>> GetAllAsync()
+            => await _entities.ToListAsync();
 
-        public async Task<T> GetByIdAsync(int id) => await _entities.FirstOrDefaultAsync(x => x.Id == id);
+        public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] include)
+        {
+            IQueryable<T> query = _entities.AsQueryable();
+            query = include.Aggregate(query, (current, include) => current.Include(include));
+            return await query.ToListAsync();
+        }
+
+        public async Task<T> GetByIdAsync(int id)
+         => await _entities.FirstOrDefaultAsync(x => x.Id == id);
+
+        public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] include)
+        {
+            IQueryable<T> query = _entities.AsQueryable();
+            query = include.Aggregate(query, (current, include) => current.Include(include));
+            return await query.FirstOrDefaultAsync(x => x.Id == id);
+        }
 
         public async Task SaveChanges()
         {

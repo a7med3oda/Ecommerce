@@ -16,6 +16,7 @@ namespace Ecommerce
             builder.Services.AddDbContext<EcommerceDbContext>(opt => opt.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));     // adding connection string (after appsettings step) step:2
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<ICategoryServices,CategoryServices>();   // AddScoper for DI Lifetime
+            builder.Services.AddScoped<IProductServices,ProductServices>();   // AddScoper for DI Lifetime
 
             var app = builder.Build();
 

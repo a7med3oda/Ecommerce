@@ -9,11 +9,11 @@ namespace Ecommerce.Models
     {
         [Key]
         public int Id { get; set; }
-        public int Name { get; set; }
-        public int Description { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public double Price { get; set; }
         public string ImageUrl { get; set; }
-        public ProductColor ProductColor { get; set; }
+        public ProductColor productColor { get; set; }
         public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
