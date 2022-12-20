@@ -33,6 +33,20 @@
                             <i class="fas fa-regular fa-search"></i>
                         </button>
                     </form>
+                    <ul class="navbar-nav mr-2">
+                        @await Component.InvokeAsync("ShoppingCartSummary")
+                    </ul>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-success dropdown-toggle" id="profile-btn" data-toggle="dropdown">
+                            <i class="fas fa-person">Hello,...</i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="profile-btn">
+                                <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
+                                    <i class="fas fa-regular fa-list-check mr-2"></i>Orders
+                                </a>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </nav>

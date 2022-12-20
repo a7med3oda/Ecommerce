@@ -1,3 +1,4 @@
+using Ecommerce.Data.Cart;
 using Ecommerce.Models;
 using Ecommerce.Services;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,15 @@ namespace Ecommerce
             // Add services to the container.
 
             // Configure DbContext
-            builder.Services.AddDbContext<EcommerceDbContext>(opt => opt.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));     // adding connection string (after appsettings step) step:2
+            builder.Services.AddDbContext<EcommerceDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));     // adding connection string (after appsettings step) step:2
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<ICategoryServices,CategoryServices>();   // AddScoper for DI Lifetime
-            builder.Services.AddScoped<IProductServices,ProductServices>();   // AddScoper for DI Lifetime
+            builder.Services.AddScoped<ICategoryServices,CategoryServices>();               // AddScoper for DI Lifetime
+            builder.Services.AddScoped<IProductServices,ProductServices>();                 // AddScoper for DI Lifetime
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();     // Sessions
+            builder.Services.AddScoped(x => ShoppingCart.GetShoppingCart(x));
+            builder.Services.AddSession();
+            builder.Services.AddScoped<IOrderServices, OrderServices>();
+
 
             var app = builder.Build();
 
@@ -32,7 +38,7 @@ namespace Ecommerce
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();       // Sessions
             app.UseAuthorization();
 
             app.MapControllerRoute(

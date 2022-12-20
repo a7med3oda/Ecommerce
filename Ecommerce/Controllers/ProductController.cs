@@ -20,7 +20,7 @@ namespace Ecommerce.Controllers
             var Response = await _services.GetAllAsync(x => x.Categories);
             if (!string.IsNullOrEmpty(searchText))
             {
-                Response = Response.Where(x => x.Name.Contains(searchText)).ToList();
+                Response = Response.Where(x => x.Name.Contains(searchText) || x.Description.Contains(searchText)).ToList();
             }
             return View(Response);
         }
