@@ -84,6 +84,3 @@ namespace Ecommerce.Controllers
         }
     }
 }
-
-// admin@admin.com : @Dmin123
-// user@user.com   : @User123
