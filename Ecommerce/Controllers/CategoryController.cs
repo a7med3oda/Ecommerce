@@ -1,10 +1,12 @@
-﻿using Ecommerce.Models;
+﻿using Ecommerce.Data.Static;
+using Ecommerce.Models;
 using Ecommerce.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class CategoryController : Controller
     {
         private readonly ICategoryServices _services;

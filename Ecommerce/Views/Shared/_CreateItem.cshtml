@@ -1,6 +1,10 @@
-﻿@model string;
-<div class="text-white" style="position:fixed;right:50px;bottom:75px;">
-	<a asp-action="Create" asp-controller="@Model" class="btn btn-danger">
-		<i class="fas fa-regular fa-plus-square mr-2"></i>
-		Create</a>
-</div>
+﻿
+@model string;
+@if (Context.User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div class="text-white" style="position:fixed;right:30px;bottom:100px;">
+        <a asp-action="Create" asp-controller="@Model" class="btn btn-outline-success">
+            <i class="fas fa-regular fa-plus-square mr-2"></i>
+            Create</a>
+    </div>
+}

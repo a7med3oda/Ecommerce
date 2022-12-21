@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Models
 {
-    public class EcommerceDbContext: DbContext
+    public class EcommerceDbContext : IdentityDbContext<ApplicationUser>
     {
-        public EcommerceDbContext(DbContextOptions<EcommerceDbContext> options):base(options) 
+        public EcommerceDbContext(DbContextOptions<EcommerceDbContext> options) : base(options)
         {
 
         }
@@ -13,6 +14,5 @@ namespace Ecommerce.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
-
     }
 }

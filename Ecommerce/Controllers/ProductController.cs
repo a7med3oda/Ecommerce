@@ -1,10 +1,12 @@
-﻿using Ecommerce.Models;
+﻿using Ecommerce.Data.Static;
+using Ecommerce.Models;
 using Ecommerce.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class ProductController : Controller
     {
         private readonly IProductServices _services;
@@ -14,17 +16,17 @@ namespace Ecommerce.Controllers
             _services = services;
             _categoryServices = categoryServices;
         }
-
-        public async Task<IActionResult> Index(string searchText)
+        [AllowAnonymous]
+        public async Task<IActionResult> Index(string searchTerm)
         {
             var Response = await _services.GetAllAsync(x => x.Categories);
-            if (!string.IsNullOrEmpty(searchText))
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                Response = Response.Where(x => x.Name.Contains(searchText) || x.Description.Contains(searchText)).ToList();
+                Response = Response.Where(x => x.Name.Contains(searchTerm)).ToList();
             }
             return View(Response);
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var Product = await _services.GetByIdAsync(id, x => x.Categories);
@@ -39,7 +41,7 @@ namespace Ecommerce.Controllers
         [HttpPost, ActionName(nameof(Create))]
         public async Task<IActionResult> CreateProduct(Product product)
         {
-            if (product != null)
+            if (ModelState.IsValid)
             {
                 await _services.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
@@ -55,8 +57,9 @@ namespace Ecommerce.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Product product)
         {
-            if (product != null)
+            if (ModelState.IsValid)
             {
+                //Update
                 await _services.UpdateAsync(product);
                 return RedirectToAction("Index");
             }

@@ -1,6 +1,8 @@
 using Ecommerce.Data.Cart;
 using Ecommerce.Models;
 using Ecommerce.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce
@@ -22,6 +24,14 @@ namespace Ecommerce
             builder.Services.AddScoped(x => ShoppingCart.GetShoppingCart(x));
             builder.Services.AddSession();
             builder.Services.AddScoped<IOrderServices, OrderServices>();
+            //Identity
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<EcommerceDbContext>();
+            builder.Services.AddMemoryCache();
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
+            builder.Services.AddAuthorization();
 
 
             var app = builder.Build();
@@ -39,6 +49,7 @@ namespace Ecommerce
 
             app.UseRouting();
             app.UseSession();       // Sessions
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

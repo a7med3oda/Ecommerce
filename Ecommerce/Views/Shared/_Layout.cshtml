@@ -3,32 +3,38 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Ecommerce</title>
+    <title>@ViewData["Title"] - ECommerce</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Ecommerce.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Product" asp-action="Index">Ecommerce</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Product" asp-action="Index">
+                    <i class="fas fa-duotone fa-cart-arrow-down"></i>
+                    ECommerce
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
-                        </li>
+                        @if (Context.User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Category</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
+                                </li>
+                        }
                     </ul>
                     <form class="form-inline" style="padding-right=30px;" asp-action="Index" asp-controller="Product">
-                        <input name="searchText" type="text" class="form-control" placeholder="Search here..." autocomplete="off" />
+                        <input name="searchTerm" type="text" class="form-control" placeholder="Search here..." autocomplete="off" />
                         <button type="submit" class="btn btn-outline-info">
                             <i class="fas fa-regular fa-search"></i>
                         </button>
@@ -36,17 +42,7 @@
                     <ul class="navbar-nav mr-2">
                         @await Component.InvokeAsync("ShoppingCartSummary")
                     </ul>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-success dropdown-toggle" id="profile-btn" data-toggle="dropdown">
-                            <i class="fas fa-person">Hello,...</i>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="profile-btn">
-                                <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
-                                    <i class="fas fa-regular fa-list-check mr-2"></i>Orders
-                                </a>
-                        </div>
-
-                    </div>
+                    <partial name="_Identity" />
                 </div>
             </div>
         </nav>
@@ -59,7 +55,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - Ecommerce - By a7med3oda
+            <i class="fas fa-duotone fa-cart-arrow-down"></i>
+            &copy; 2022 - ECommerce - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
